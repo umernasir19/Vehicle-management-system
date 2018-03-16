@@ -1,0 +1,695 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
+          <Property Name="VehicleCategoryID" Type="int" Nullable="false" />
+          <Property Name="startDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="RateCardId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerTypeID" Type="int" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="DoB" Type="datetime" Nullable="false" />
+          <Property Name="CNICNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="LicenseNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="IsCar" Type="bit" Nullable="false" />
+          <Property Name="IsBike" Type="bit" Nullable="false" />
+          <Property Name="PrimarycontactNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="SecondaryContactNumber" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="20" />
+          <Property Name="Remarks" Type="text" />
+          <Property Name="RefrenceId" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Customer_Type">
+          <Key>
+            <PropertyRef Name="CustomerTypeId" />
+          </Key>
+          <Property Name="CustomerTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="VehicleCategory">
+          <Key>
+            <PropertyRef Name="VehicleCategoryId" />
+          </Key>
+          <Property Name="VehicleCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VehicleMake">
+          <Key>
+            <PropertyRef Name="VehicleMakerID" />
+          </Key>
+          <Property Name="VehicleMakerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VehicleModel">
+          <Key>
+            <PropertyRef Name="VehicleModelID" />
+          </Key>
+          <Property Name="VehicleModelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="VehicleMakeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vehicles">
+          <Key>
+            <PropertyRef Name="VehicleID" />
+          </Key>
+          <Property Name="VehicleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MakeID" Type="int" Nullable="false" />
+          <Property Name="ModelId" Type="int" Nullable="false" />
+          <Property Name="VehiclCategoryId" Type="int" Nullable="false" />
+          <Property Name="Mileage" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="VehiclesRateCard">
+          <Key>
+            <PropertyRef Name="RateCardID" />
+          </Key>
+          <Property Name="RateCardID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleCategoryID" Type="int" Nullable="false" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
+          <Property Name="BaseRate" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="DailyRate" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="WeeklyRate" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="Monthly" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="IsAcctive" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Booking_VehicleCategory">
+          <End Role="VehicleCategory" Type="Self.VehicleCategory" Multiplicity="1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleCategory">
+              <PropertyRef Name="VehicleCategoryId" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="VehicleCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Booking_Vehicles">
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Booking_VehiclesRateCard">
+          <End Role="VehiclesRateCard" Type="Self.VehiclesRateCard" Multiplicity="1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehiclesRateCard">
+              <PropertyRef Name="RateCardID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="RateCardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_Customer_Type">
+          <End Role="Customer_Type" Type="Self.Customer_Type" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer_Type">
+              <PropertyRef Name="CustomerTypeId" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CustomerTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VehicleModel_VehicleMake">
+          <End Role="VehicleMake" Type="Self.VehicleMake" Multiplicity="1" />
+          <End Role="VehicleModel" Type="Self.VehicleModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleMake">
+              <PropertyRef Name="VehicleMakerID" />
+            </Principal>
+            <Dependent Role="VehicleModel">
+              <PropertyRef Name="VehicleMakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_VehicleCategory">
+          <End Role="VehicleCategory" Type="Self.VehicleCategory" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleCategory">
+              <PropertyRef Name="VehicleCategoryId" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="VehiclCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_VehicleMake">
+          <End Role="VehicleMake" Type="Self.VehicleMake" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleMake">
+              <PropertyRef Name="VehicleMakerID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="MakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_VehicleModel">
+          <End Role="VehicleModel" Type="Self.VehicleModel" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleModel">
+              <PropertyRef Name="VehicleModelID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="ModelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VehiclesRateCard_VehicleCategory">
+          <End Role="VehicleCategory" Type="Self.VehicleCategory" Multiplicity="1" />
+          <End Role="VehiclesRateCard" Type="Self.VehiclesRateCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleCategory">
+              <PropertyRef Name="VehicleCategoryId" />
+            </Principal>
+            <Dependent Role="VehiclesRateCard">
+              <PropertyRef Name="VehicleCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VehiclesRateCard_Vehicles">
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="1" />
+          <End Role="VehiclesRateCard" Type="Self.VehiclesRateCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="VehiclesRateCard">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer_Type" EntityType="Self.Customer_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleCategory" EntityType="Self.VehicleCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleMake" EntityType="Self.VehicleMake" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleModel" EntityType="Self.VehicleModel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehiclesRateCard" EntityType="Self.VehiclesRateCard" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Booking_VehicleCategory" Association="Self.FK_Booking_VehicleCategory">
+            <End Role="VehicleCategory" EntitySet="VehicleCategory" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Booking_Vehicles" Association="Self.FK_Booking_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Booking_VehiclesRateCard" Association="Self.FK_Booking_VehiclesRateCard">
+            <End Role="VehiclesRateCard" EntitySet="VehiclesRateCard" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Customer_Type" Association="Self.FK_Customer_Customer_Type">
+            <End Role="Customer_Type" EntitySet="Customer_Type" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehicleModel_VehicleMake" Association="Self.FK_VehicleModel_VehicleMake">
+            <End Role="VehicleMake" EntitySet="VehicleMake" />
+            <End Role="VehicleModel" EntitySet="VehicleModel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_VehicleCategory" Association="Self.FK_Vehicles_VehicleCategory">
+            <End Role="VehicleCategory" EntitySet="VehicleCategory" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_VehicleMake" Association="Self.FK_Vehicles_VehicleMake">
+            <End Role="VehicleMake" EntitySet="VehicleMake" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_VehicleModel" Association="Self.FK_Vehicles_VehicleModel">
+            <End Role="VehicleModel" EntitySet="VehicleModel" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehiclesRateCard_VehicleCategory" Association="Self.FK_VehiclesRateCard_VehicleCategory">
+            <End Role="VehicleCategory" EntitySet="VehicleCategory" />
+            <End Role="VehiclesRateCard" EntitySet="VehiclesRateCard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehiclesRateCard_Vehicles" Association="Self.FK_VehiclesRateCard_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="VehiclesRateCard" EntitySet="VehiclesRateCard" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <Property Name="VehicleCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RateCardId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="VehicleCategory" Relationship="Self.FK_Booking_VehicleCategory" FromRole="Booking" ToRole="VehicleCategory" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_Booking_Vehicles" FromRole="Booking" ToRole="Vehicles" />
+          <NavigationProperty Name="VehiclesRateCard" Relationship="Self.FK_Booking_VehiclesRateCard" FromRole="Booking" ToRole="VehiclesRateCard" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CustomerTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DoB" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CNICNumber" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="LicenseNumber" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="IsCar" Type="Boolean" Nullable="false" />
+          <Property Name="IsBike" Type="Boolean" Nullable="false" />
+          <Property Name="PrimarycontactNumber" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="SecondaryContactNumber" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="EmailAddress" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RefrenceId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customer_Type" Relationship="Self.FK_Customer_Customer_Type" FromRole="Customer" ToRole="Customer_Type" />
+        </EntityType>
+        <EntityType Name="Customer_Type">
+          <Key>
+            <PropertyRef Name="CustomerTypeId" />
+          </Key>
+          <Property Name="CustomerTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Customer_Customer_Type" FromRole="Customer_Type" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="VehicleCategory">
+          <Key>
+            <PropertyRef Name="VehicleCategoryId" />
+          </Key>
+          <Property Name="VehicleCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK_Booking_VehicleCategory" FromRole="VehicleCategory" ToRole="Booking" />
+          <NavigationProperty Name="Vehicles" Relationship="Self.FK_Vehicles_VehicleCategory" FromRole="VehicleCategory" ToRole="Vehicles" />
+          <NavigationProperty Name="VehiclesRateCards" Relationship="Self.FK_VehiclesRateCard_VehicleCategory" FromRole="VehicleCategory" ToRole="VehiclesRateCard" />
+        </EntityType>
+        <EntityType Name="VehicleMake">
+          <Key>
+            <PropertyRef Name="VehicleMakerID" />
+          </Key>
+          <Property Name="VehicleMakerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="VehicleModels" Relationship="Self.FK_VehicleModel_VehicleMake" FromRole="VehicleMake" ToRole="VehicleModel" />
+          <NavigationProperty Name="Vehicles" Relationship="Self.FK_Vehicles_VehicleMake" FromRole="VehicleMake" ToRole="Vehicles" />
+        </EntityType>
+        <EntityType Name="VehicleModel">
+          <Key>
+            <PropertyRef Name="VehicleModelID" />
+          </Key>
+          <Property Name="VehicleModelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VehicleMakeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="VehicleMake" Relationship="Self.FK_VehicleModel_VehicleMake" FromRole="VehicleModel" ToRole="VehicleMake" />
+          <NavigationProperty Name="Vehicles" Relationship="Self.FK_Vehicles_VehicleModel" FromRole="VehicleModel" ToRole="Vehicles" />
+        </EntityType>
+        <EntityType Name="Vehicle">
+          <Key>
+            <PropertyRef Name="VehicleID" />
+          </Key>
+          <Property Name="VehicleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MakeID" Type="Int32" Nullable="false" />
+          <Property Name="ModelId" Type="Int32" Nullable="false" />
+          <Property Name="VehiclCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Mileage" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK_Booking_Vehicles" FromRole="Vehicles" ToRole="Booking" />
+          <NavigationProperty Name="VehicleCategory" Relationship="Self.FK_Vehicles_VehicleCategory" FromRole="Vehicles" ToRole="VehicleCategory" />
+          <NavigationProperty Name="VehicleMake" Relationship="Self.FK_Vehicles_VehicleMake" FromRole="Vehicles" ToRole="VehicleMake" />
+          <NavigationProperty Name="VehicleModel" Relationship="Self.FK_Vehicles_VehicleModel" FromRole="Vehicles" ToRole="VehicleModel" />
+          <NavigationProperty Name="VehiclesRateCards" Relationship="Self.FK_VehiclesRateCard_Vehicles" FromRole="Vehicles" ToRole="VehiclesRateCard" />
+        </EntityType>
+        <EntityType Name="VehiclesRateCard">
+          <Key>
+            <PropertyRef Name="RateCardID" />
+          </Key>
+          <Property Name="RateCardID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <Property Name="BaseRate" Type="Decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="DailyRate" Type="Decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="WeeklyRate" Type="Decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="Monthly" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsAcctive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK_Booking_VehiclesRateCard" FromRole="VehiclesRateCard" ToRole="Booking" />
+          <NavigationProperty Name="VehicleCategory" Relationship="Self.FK_VehiclesRateCard_VehicleCategory" FromRole="VehiclesRateCard" ToRole="VehicleCategory" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_VehiclesRateCard_Vehicles" FromRole="VehiclesRateCard" ToRole="Vehicles" />
+        </EntityType>
+        <Association Name="FK_Booking_VehicleCategory">
+          <End Role="VehicleCategory" Type="Self.VehicleCategory" Multiplicity="1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleCategory">
+              <PropertyRef Name="VehicleCategoryId" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="VehicleCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Booking_Vehicles">
+          <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Booking_VehiclesRateCard">
+          <End Role="VehiclesRateCard" Type="Self.VehiclesRateCard" Multiplicity="1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehiclesRateCard">
+              <PropertyRef Name="RateCardID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="RateCardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_Customer_Type">
+          <End Role="Customer_Type" Type="Self.Customer_Type" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer_Type">
+              <PropertyRef Name="CustomerTypeId" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CustomerTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_VehicleCategory">
+          <End Role="VehicleCategory" Type="Self.VehicleCategory" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleCategory">
+              <PropertyRef Name="VehicleCategoryId" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="VehiclCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VehiclesRateCard_VehicleCategory">
+          <End Role="VehicleCategory" Type="Self.VehicleCategory" Multiplicity="1" />
+          <End Role="VehiclesRateCard" Type="Self.VehiclesRateCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleCategory">
+              <PropertyRef Name="VehicleCategoryId" />
+            </Principal>
+            <Dependent Role="VehiclesRateCard">
+              <PropertyRef Name="VehicleCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VehicleModel_VehicleMake">
+          <End Role="VehicleMake" Type="Self.VehicleMake" Multiplicity="1" />
+          <End Role="VehicleModel" Type="Self.VehicleModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleMake">
+              <PropertyRef Name="VehicleMakerID" />
+            </Principal>
+            <Dependent Role="VehicleModel">
+              <PropertyRef Name="VehicleMakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_VehicleMake">
+          <End Role="VehicleMake" Type="Self.VehicleMake" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleMake">
+              <PropertyRef Name="VehicleMakerID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="MakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_VehicleModel">
+          <End Role="VehicleModel" Type="Self.VehicleModel" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleModel">
+              <PropertyRef Name="VehicleModelID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="ModelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VehiclesRateCard_Vehicles">
+          <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="VehiclesRateCard" Type="Self.VehiclesRateCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="VehiclesRateCard">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Vehicle_Management_SystemDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bookings" EntityType="Self.Booking" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Customer_Type" EntityType="Self.Customer_Type" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="VehicleCategories" EntityType="Self.VehicleCategory" />
+          <EntitySet Name="VehicleMakes" EntityType="Self.VehicleMake" />
+          <EntitySet Name="VehicleModels" EntityType="Self.VehicleModel" />
+          <EntitySet Name="Vehicles" EntityType="Self.Vehicle" />
+          <EntitySet Name="VehiclesRateCards" EntityType="Self.VehiclesRateCard" />
+          <AssociationSet Name="FK_Booking_VehicleCategory" Association="Self.FK_Booking_VehicleCategory">
+            <End Role="VehicleCategory" EntitySet="VehicleCategories" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Booking_Vehicles" Association="Self.FK_Booking_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Booking_VehiclesRateCard" Association="Self.FK_Booking_VehiclesRateCard">
+            <End Role="VehiclesRateCard" EntitySet="VehiclesRateCards" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Customer_Type" Association="Self.FK_Customer_Customer_Type">
+            <End Role="Customer_Type" EntitySet="Customer_Type" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_VehicleCategory" Association="Self.FK_Vehicles_VehicleCategory">
+            <End Role="VehicleCategory" EntitySet="VehicleCategories" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehiclesRateCard_VehicleCategory" Association="Self.FK_VehiclesRateCard_VehicleCategory">
+            <End Role="VehicleCategory" EntitySet="VehicleCategories" />
+            <End Role="VehiclesRateCard" EntitySet="VehiclesRateCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehicleModel_VehicleMake" Association="Self.FK_VehicleModel_VehicleMake">
+            <End Role="VehicleMake" EntitySet="VehicleMakes" />
+            <End Role="VehicleModel" EntitySet="VehicleModels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_VehicleMake" Association="Self.FK_Vehicles_VehicleMake">
+            <End Role="VehicleMake" EntitySet="VehicleMakes" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_VehicleModel" Association="Self.FK_Vehicles_VehicleModel">
+            <End Role="VehicleModel" EntitySet="VehicleModels" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehiclesRateCard_Vehicles" Association="Self.FK_VehiclesRateCard_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="VehiclesRateCard" EntitySet="VehiclesRateCards" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Vehicle_Management_SystemDbContext">
+          <EntitySetMapping Name="Bookings">
+            <EntityTypeMapping TypeName="Model.Booking">
+              <MappingFragment StoreEntitySet="Booking">
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="VehicleCategoryID" ColumnName="VehicleCategoryID" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="RateCardId" ColumnName="RateCardId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="Model.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CustomerTypeID" ColumnName="CustomerTypeID" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DoB" ColumnName="DoB" />
+                <ScalarProperty Name="CNICNumber" ColumnName="CNICNumber" />
+                <ScalarProperty Name="LicenseNumber" ColumnName="LicenseNumber" />
+                <ScalarProperty Name="IsCar" ColumnName="IsCar" />
+                <ScalarProperty Name="IsBike" ColumnName="IsBike" />
+                <ScalarProperty Name="PrimarycontactNumber" ColumnName="PrimarycontactNumber" />
+                <ScalarProperty Name="SecondaryContactNumber" ColumnName="SecondaryContactNumber" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="RefrenceId" ColumnName="RefrenceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customer_Type">
+            <EntityTypeMapping TypeName="Model.Customer_Type">
+              <MappingFragment StoreEntitySet="Customer_Type">
+                <ScalarProperty Name="CustomerTypeId" ColumnName="CustomerTypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleCategories">
+            <EntityTypeMapping TypeName="Model.VehicleCategory">
+              <MappingFragment StoreEntitySet="VehicleCategory">
+                <ScalarProperty Name="VehicleCategoryId" ColumnName="VehicleCategoryId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleMakes">
+            <EntityTypeMapping TypeName="Model.VehicleMake">
+              <MappingFragment StoreEntitySet="VehicleMake">
+                <ScalarProperty Name="VehicleMakerID" ColumnName="VehicleMakerID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleModels">
+            <EntityTypeMapping TypeName="Model.VehicleModel">
+              <MappingFragment StoreEntitySet="VehicleModel">
+                <ScalarProperty Name="VehicleModelID" ColumnName="VehicleModelID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="VehicleMakeID" ColumnName="VehicleMakeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehicles">
+            <EntityTypeMapping TypeName="Model.Vehicle">
+              <MappingFragment StoreEntitySet="Vehicles">
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="MakeID" ColumnName="MakeID" />
+                <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+                <ScalarProperty Name="VehiclCategoryId" ColumnName="VehiclCategoryId" />
+                <ScalarProperty Name="Mileage" ColumnName="Mileage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehiclesRateCards">
+            <EntityTypeMapping TypeName="Model.VehiclesRateCard">
+              <MappingFragment StoreEntitySet="VehiclesRateCard">
+                <ScalarProperty Name="RateCardID" ColumnName="RateCardID" />
+                <ScalarProperty Name="VehicleCategoryID" ColumnName="VehicleCategoryID" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="BaseRate" ColumnName="BaseRate" />
+                <ScalarProperty Name="DailyRate" ColumnName="DailyRate" />
+                <ScalarProperty Name="WeeklyRate" ColumnName="WeeklyRate" />
+                <ScalarProperty Name="Monthly" ColumnName="Monthly" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="IsAcctive" ColumnName="IsAcctive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

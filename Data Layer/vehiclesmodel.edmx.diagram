@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e5724ef3e6b14bb59e11b90faee61e33" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.Booking" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Customer" Width="1.5" PointX="8" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Customer_Type" Width="1.5" PointX="5.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.sysdiagram" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.VehicleCategory" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.VehicleMake" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.VehicleModel" Width="1.5" PointX="3.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Vehicle" Width="1.5" PointX="6" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.VehiclesRateCard" Width="1.5" PointX="8.25" PointY="3.25" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_Booking_VehicleCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Booking_Vehicles" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Booking_VehiclesRateCard" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Customer_Customer_Type" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Vehicles_VehicleCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_VehiclesRateCard_VehicleCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_VehicleModel_VehicleMake" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Vehicles_VehicleMake" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Vehicles_VehicleModel" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_VehiclesRateCard_Vehicles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
